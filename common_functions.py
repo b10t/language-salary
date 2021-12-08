@@ -1,3 +1,6 @@
+from terminaltables import SingleTable
+
+
 def get_list_programming_languages():
     """Получить список языков программирования."""
     return ['Python', 'Java', 'C#']
@@ -43,6 +46,20 @@ def get_dict_by_language(language,
         average_salary=average_salary)}
 
 
-def show_table_average_salary():
+def show_table_average_salary(title, vacancies_data):
     """Отобразить таблицу по языкам программирования, со средней зарплатой."""
-    pass
+
+    table_data = []
+    table_data.append(('Язык программирования', 'Найдено вакансий',
+                       'Обработано вакансий', 'Средняя зарплата'))
+
+    for vacancy in vacancies_data:
+        language = list(vacancy.keys())
+
+        for value in list(vacancy.values())[0].values():
+            language.append(value)
+
+        table_data.append(tuple(language))
+
+    table_instance = SingleTable(table_data, title)
+    print(table_instance.table)
