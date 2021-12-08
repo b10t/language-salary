@@ -22,7 +22,7 @@ def calculation_of_average_salary(average_salary):
     Args:
         average_salary (list): Список зарплат
     """
-    return sum(average_salary) / len(average_salary)
+    return round(sum(average_salary) / len(average_salary), 2)
 
 
 def show_table_average_salary():
