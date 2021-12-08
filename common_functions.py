@@ -22,7 +22,25 @@ def calculation_of_average_salary(average_salary):
     Args:
         average_salary (list): Список зарплат
     """
-    return round(sum(average_salary) / len(average_salary), 2)
+    return round(sum(average_salary) / len(average_salary))
+
+
+def get_dict_by_language(language,
+                         vacancies_found,
+                         vacancies_processed,
+                         average_salary) -> dict:
+    """Возвращает словарь по данным языка.
+
+    Args:
+        language (str): Название языка программирования
+        vacancies_found (int): Количество найденных вакансий
+        vacancies_processed (int): Количество обработанных вакансий
+        average_salary (float): Средняя заработная плата
+    """
+    return {language: dict(
+        vacancies_found=vacancies_found,
+        vacancies_processed=vacancies_processed,
+        average_salary=average_salary)}
 
 
 def show_table_average_salary():
