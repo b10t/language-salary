@@ -10,7 +10,7 @@ from common_functions import (calculation_of_average_salary,
 
 def get_superjob_token():
     load_dotenv()
-    return os.getenv('SUPERJOB_TOKEN')
+    return os.getenv('SUPERJOB_KEY')
 
 
 def predict_rub_salary_hh(salary):
