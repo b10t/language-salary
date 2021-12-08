@@ -6,15 +6,18 @@ from common_functions import (get_list_programming_languages,
                               get_dict_by_language)
 
 
-def get_vacancies_from_hh():
+def get_vacancies_from_hh() -> list:
     """Получить список вакансий с hh.ru"""
+    vacancies_data = []
     for language in get_list_programming_languages():
-        get_vacancies_by_language(language)
+        vacancies_data.append(get_vacancies_by_language(language))
         # TODO удалить
         # break
 
+    return vacancies_data
 
-def get_vacancies_by_language(language):
+
+def get_vacancies_by_language(language) -> dict:
     """Получить вакансии по выбраному языку программирования с hh.ru
 
     Args:
@@ -24,9 +27,6 @@ def get_vacancies_by_language(language):
 
     found_records = response_content['found']
     count_pages = response_content['pages']
-
-    print(language, found_records)
-    print('pages', count_pages)
 
     average_salary = []
 
@@ -49,7 +49,7 @@ def get_vacancies_by_language(language):
         len(average_salary),
         calculation_of_average_salary(average_salary))
 
-    print(language_dict)
+    return language_dict
 
 
 def fetch_vacancies_data(language, page=0) -> dict:
@@ -75,4 +75,4 @@ def fetch_vacancies_data(language, page=0) -> dict:
 
 
 if __name__ == "main":
-    get_vacancies_from_hh()
+    print(get_vacancies_from_hh())
