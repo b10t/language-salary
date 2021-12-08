@@ -16,6 +16,15 @@ def predict_rub_salary(salary):
         return salary_to * 0.8
 
 
+def calculation_of_average_salary(average_salary):
+    """Расчет средней заработной платы.
+
+    Args:
+        average_salary (list): Список зарплат
+    """
+    return sum(average_salary) / len(average_salary)
+
+
 def show_table_average_salary():
     """Отобразить таблицу по языкам программирования, со средней зарплатой."""
     pass
