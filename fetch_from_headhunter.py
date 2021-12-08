@@ -2,8 +2,12 @@ import requests
 
 from common_functions import (calculation_of_average_salary,
                               get_dict_by_language,
-                              get_list_programming_languages,
-                              predict_rub_salary)
+                              get_list_programming_languages, predict_salary)
+
+
+def predict_rub_salary_hh(salary):
+    """Получение прогнозируемой зарплаты."""
+    return predict_salary(salary['from'], salary['to'])
 
 
 def get_vacancies_from_hh() -> list:
@@ -11,8 +15,6 @@ def get_vacancies_from_hh() -> list:
     vacancies_data = []
     for language in get_list_programming_languages():
         vacancies_data.append(get_vacancies_by_language(language))
-        # TODO удалить
-        # break
 
     return vacancies_data
 
@@ -30,15 +32,14 @@ def get_vacancies_by_language(language) -> dict:
 
     average_salary = []
 
-    # TODO вернуть count_pages
-    for page_number in range(1):
+    for page_number in range(count_pages):
         response_content = fetch_vacancies_data(language, page_number)
 
         for vacancy in response_content['items']:
             if vacancy['salary']:
                 if vacancy['salary']['currency'] == 'RUR':
                     average_salary.append(
-                        predict_rub_salary(
+                        predict_rub_salary_hh(
                             vacancy['salary']
                         )
                     )
