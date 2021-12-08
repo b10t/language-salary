@@ -14,3 +14,8 @@ def predict_rub_salary(salary):
         return salary_from * 1.2
     else:
         return salary_to * 0.8
+
+
+def show_table_average_salary():
+    """Отобразить таблицу по языкам программирования, со средней зарплатой."""
+    pass
