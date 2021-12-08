@@ -1,9 +1,9 @@
 import requests
 
-from common_functions import (get_list_programming_languages,
-                              predict_rub_salary,
-                              calculation_of_average_salary,
-                              get_dict_by_language)
+from common_functions import (calculation_of_average_salary,
+                              get_dict_by_language,
+                              get_list_programming_languages,
+                              predict_rub_salary)
 
 
 def get_vacancies_from_hh() -> list:
