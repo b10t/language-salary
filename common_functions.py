@@ -6,11 +6,8 @@ def get_list_programming_languages():
     return ['Python', 'Java', 'C#']
 
 
-def predict_rub_salary(salary):
+def predict_salary(salary_from, salary_to):
     """Получение прогнозируемой зарплаты."""
-    salary_from = salary['from']
-    salary_to = salary['to']
-
     if salary_from and salary_to:
         return (salary_from + salary_to) / 2
     elif salary_from:
