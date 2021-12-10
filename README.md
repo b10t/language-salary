@@ -8,15 +8,16 @@
 *  C#
 
 ### Как установить
-Для получения данных с сайта SuperJob, необходимо получить секретный ключ на https://api.superjob.ru/register и сохранить его в переменную окружения `SUPERJOB_KEY`. 
+Во первых, необходимо создать файл `.env`, в который будем записывать переменные окружения.   
+Для получения данных с сайта SuperJob, необходимо получить секретный ключ на https://api.superjob.ru/register и записать его в переменную окружения `SUPERJOB_KEY` файла `.env`. 
 
 Python3 должен быть уже установлен.
 Затем используйте `pip` (или `pip3`, есть конфликт с Python2) для установки зависимостей:
 ```console
-$ pip install -r requirements.txt
+foo@bar:~$ pip install -r requirements.txt
 ```
 
 ### Как запускать
 ```console
-$ python3 main.py
+foo@bar:~$ python3 main.py
 ```
