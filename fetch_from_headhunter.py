@@ -1,19 +1,12 @@
 import requests
 
-from common_functions import (calculation_of_average_salary,
-                              get_dict_by_language,
-                              get_list_programming_languages, predict_salary)
-
-
-def predict_rub_salary_hh(salary):
-    """Получение прогнозируемой зарплаты."""
-    return predict_salary(salary['from'], salary['to'])
+from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
 
 
 def get_vacancies_from_hh() -> list:
     """Получить список вакансий с hh.ru"""
     vacancies_data = []
-    for language in get_list_programming_languages():
+    for language in LIST_PROGRAMMING_LANGUAGES:
         vacancies_data.append(get_vacancies_by_language(language))
 
     return vacancies_data
@@ -39,16 +32,16 @@ def get_vacancies_by_language(language) -> dict:
             if vacancy['salary']:
                 if vacancy['salary']['currency'] == 'RUR':
                     average_salary.append(
-                        predict_rub_salary_hh(
-                            vacancy['salary']
+                        predict_salary(
+                            vacancy['salary']['from'],
+                            vacancy['salary']['to'],
                         )
                     )
 
-    language_dict = get_dict_by_language(
-        language,
-        found_records,
-        len(average_salary),
-        calculation_of_average_salary(average_salary))
+    language_dict = {language: dict(
+        vacancies_found=found_records,
+        vacancies_processed=len(average_salary),
+        average_salary=int(sum(average_salary) / len(average_salary)))}
 
     return language_dict
 

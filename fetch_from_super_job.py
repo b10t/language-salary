@@ -1,39 +1,28 @@
 import os
 
 import requests
-from dotenv import load_dotenv
 
-from common_functions import (calculation_of_average_salary,
-                              get_dict_by_language,
-                              get_list_programming_languages, predict_salary)
-
-
-def get_superjob_token():
-    load_dotenv()
-    return os.getenv('SUPERJOB_KEY')
-
-
-def predict_rub_salary_hh(salary):
-    """Получение прогнозируемой зарплаты."""
-    return predict_salary(salary['payment_from'], salary['payment_to'])
+from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
 
 
 def get_vacancies_from_sj() -> list:
     """Получить список вакансий с superjob.ru"""
+    sj_token = os.getenv('SUPERJOB_KEY', '')
+
     vacancies_data = []
-    for language in get_list_programming_languages():
-        vacancies_data.append(get_vacancies_by_language(language))
+    for language in LIST_PROGRAMMING_LANGUAGES:
+        vacancies_data.append(get_vacancies_by_language(sj_token, language))
 
     return vacancies_data
 
 
-def get_vacancies_by_language(language) -> dict:
+def get_vacancies_by_language(sj_token, language) -> dict:
     """Получить вакансии по выбраному языку программирования с hh.ru
 
     Args:
         language (str): Язык программирования
     """
-    response_content = fetch_vacancies_data(language)
+    response_content = fetch_vacancies_data(sj_token, language)
 
     found_records = response_content['total']
     count_pages = round(found_records / 20)
@@ -41,22 +30,27 @@ def get_vacancies_by_language(language) -> dict:
     average_salary = []
 
     for page_number in range(count_pages):
-        response_content = fetch_vacancies_data(language, page_number)
+        response_content = fetch_vacancies_data(sj_token,
+                                                language,
+                                                page_number)
 
         for vacancy in response_content['objects']:
             if vacancy['currency'] == 'rub':
-                average_salary.append(predict_rub_salary_hh(vacancy))
+                average_salary.append(
+                    predict_salary(vacancy['payment_from'],
+                                   vacancy['payment_to']
+                                   )
+                )
 
-    language_dict = get_dict_by_language(
-        language,
-        found_records,
-        len(average_salary),
-        calculation_of_average_salary(average_salary))
+    language_dict = {language: dict(
+        vacancies_found=found_records,
+        vacancies_processed=len(average_salary),
+        average_salary=int(sum(average_salary) / len(average_salary)))}
 
     return language_dict
 
 
-def fetch_vacancies_data(language, page=0) -> dict:
+def fetch_vacancies_data(sj_token, language, page=0) -> dict:
     """Получить данные по выбраному языку программирования с superjob.ru
 
     Args:
@@ -66,7 +60,7 @@ def fetch_vacancies_data(language, page=0) -> dict:
     Returns:
         dict: Словарь с данными по вакансиям
     """
-    headers = {'X-Api-App-Id': get_superjob_token()}
+    headers = {'X-Api-App-Id': sj_token}
     payload = {'keyword': 'Программист %s' % language,
                't': 4,
                'period': 1,
@@ -82,4 +76,4 @@ def fetch_vacancies_data(language, page=0) -> dict:
 
 
 if __name__ == '__main__':
-    get_superjob_token()
+    print(get_vacancies_from_sj())
