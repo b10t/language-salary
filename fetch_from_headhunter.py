@@ -2,6 +2,9 @@ import requests
 
 from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
 
+MOSCOW_REGION_ID = 1
+NUMBER_OF_DAYS = 30
+
 
 def get_vacancies_from_hh() -> list:
     """Получить список вакансий с hh.ru"""
@@ -57,8 +60,8 @@ def fetch_vacancies_data(language, page=0) -> dict:
         dict: Словарь с данными по вакансиям
     """
     payload = {'text': 'Программист %s' % language,
-               'area': 1,
-               'period': 1,
+               'area': MOSCOW_REGION_ID,
+               'period': NUMBER_OF_DAYS,
                'page': page}
     response = requests.get(
         'https://api.hh.ru/vacancies',

@@ -5,6 +5,11 @@ import requests
 from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
 
 
+MOSCOW_REGION_ID = 1
+PUBLICATION_PERIOD = 0
+INDUSTRIES_CATALOG = 48
+
+
 def get_vacancies_from_sj() -> list:
     """Получить список вакансий с superjob.ru"""
     sj_token = os.getenv('SUPERJOB_KEY', '')
@@ -62,9 +67,9 @@ def fetch_vacancies_data(sj_token, language, page=0) -> dict:
     """
     headers = {'X-Api-App-Id': sj_token}
     payload = {'keyword': 'Программист %s' % language,
-               't': 4,
-               'period': 1,
-               'catalogues': 48,
+               't': MOSCOW_REGION_ID,
+               'period': PUBLICATION_PERIOD,
+               'catalogues': INDUSTRIES_CATALOG,
                'page': page}
     response = requests.get(
         'https://api.superjob.ru/2.0/vacancies/',
