@@ -6,7 +6,7 @@ import requests
 from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
 
 MOSCOW_REGION_ID = 4
-PUBLICATION_PERIOD = 1
+PUBLICATION_PERIOD = 0
 INDUSTRIES_CATALOG = 48
 
 
@@ -50,6 +50,8 @@ def get_vacancies_by_language(sj_token, language) -> dict:
 
         if not response_content['more']:
             break
+
+    average_salary = [i for i in average_salary if i]
 
     language_dict = dict(
         vacancies_found=found_records,

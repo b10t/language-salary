@@ -39,6 +39,8 @@ def get_vacancies_by_language(language) -> dict:
                     )
                 )
 
+    average_salary = [i for i in average_salary if i]
+
     language_dict = dict(
         vacancies_found=found_records,
         vacancies_processed=len(average_salary),
@@ -59,7 +61,6 @@ def fetch_vacancies_data(language, page=0) -> dict:
     """
     payload = {'text': 'Программист %s' % language,
                'area': MOSCOW_REGION_ID,
-               'period': 1,
                'page': page}
     response = requests.get(
         'https://api.hh.ru/vacancies',
