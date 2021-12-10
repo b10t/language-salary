@@ -3,7 +3,6 @@ import requests
 from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
 
 MOSCOW_REGION_ID = 1
-NUMBER_OF_DAYS = 30
 
 
 def get_vacancies_from_hh() -> list:
@@ -32,14 +31,13 @@ def get_vacancies_by_language(language) -> dict:
         response_content = fetch_vacancies_data(language, page_number)
 
         for vacancy in response_content['items']:
-            if vacancy['salary']:
-                if vacancy['salary']['currency'] == 'RUR':
-                    average_salary.append(
-                        predict_salary(
-                            vacancy['salary']['from'],
-                            vacancy['salary']['to'],
-                        )
+            if vacancy['salary'] and vacancy['salary']['currency'] == 'RUR':
+                average_salary.append(
+                    predict_salary(
+                        vacancy['salary']['from'],
+                        vacancy['salary']['to'],
                     )
+                )
 
     language_dict = {language: dict(
         vacancies_found=found_records,
@@ -61,7 +59,6 @@ def fetch_vacancies_data(language, page=0) -> dict:
     """
     payload = {'text': 'Программист %s' % language,
                'area': MOSCOW_REGION_ID,
-               'period': NUMBER_OF_DAYS,
                'page': page}
     response = requests.get(
         'https://api.hh.ru/vacancies',
