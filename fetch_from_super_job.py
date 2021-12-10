@@ -1,22 +1,23 @@
 import os
+from itertools import count
 
 import requests
 
 from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
 
-
-MOSCOW_REGION_ID = 1
-PUBLICATION_PERIOD = 0
+MOSCOW_REGION_ID = 4
+PUBLICATION_PERIOD = 1
 INDUSTRIES_CATALOG = 48
 
 
-def get_vacancies_from_sj() -> list:
+def get_vacancies_from_sj() -> dict:
     """Получить список вакансий с superjob.ru"""
     sj_token = os.getenv('SUPERJOB_KEY', '')
 
-    vacancies_data = []
+    vacancies_data = {}
     for language in LIST_PROGRAMMING_LANGUAGES:
-        vacancies_data.append(get_vacancies_by_language(sj_token, language))
+        vacancies_data[language] = get_vacancies_by_language(sj_token,
+                                                             language)
 
     return vacancies_data
 
@@ -30,14 +31,14 @@ def get_vacancies_by_language(sj_token, language) -> dict:
     response_content = fetch_vacancies_data(sj_token, language)
 
     found_records = response_content['total']
-    count_pages = round(found_records / 20)
+    number_page = count()
 
     average_salary = []
 
-    for page_number in range(count_pages):
+    while True:
         response_content = fetch_vacancies_data(sj_token,
                                                 language,
-                                                page_number)
+                                                next(number_page))
 
         for vacancy in response_content['objects']:
             if vacancy['currency'] == 'rub':
@@ -47,10 +48,13 @@ def get_vacancies_by_language(sj_token, language) -> dict:
                                    )
                 )
 
-    language_dict = {language: dict(
+        if not response_content['more']:
+            break
+
+    language_dict = dict(
         vacancies_found=found_records,
         vacancies_processed=len(average_salary),
-        average_salary=int(sum(average_salary) / len(average_salary)))}
+        average_salary=int(sum(average_salary) / len(average_salary)))
 
     return language_dict
 

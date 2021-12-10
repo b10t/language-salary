@@ -20,13 +20,8 @@ def show_table_average_salary(title, vacancies_data):
     table_data.append(('Язык программирования', 'Найдено вакансий',
                        'Обработано вакансий', 'Средняя зарплата'))
 
-    for vacancy in vacancies_data:
-        language = list(vacancy.keys())
-
-        for value in list(vacancy.values())[0].values():
-            language.append(value)
-
-        table_data.append(tuple(language))
+    for language, language_data in vacancies_data.items():
+        table_data.append(tuple([language, *language_data.values()]))
 
     table_instance = SingleTable(table_data, title)
     print(table_instance.table)
