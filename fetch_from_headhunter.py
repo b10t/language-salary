@@ -1,3 +1,5 @@
+from itertools import count
+
 import requests
 
 from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
@@ -20,14 +22,10 @@ def get_vacancies_by_language(language) -> dict:
     Args:
         language (str): Язык программирования
     """
-    response_content = fetch_vacancies_data(language)
-
-    found_records = response_content['found']
-    count_pages = response_content['pages']
-
+    found_records = 0
     average_salary = []
 
-    for page_number in range(count_pages):
+    for page_number in count():
         response_content = fetch_vacancies_data(language, page_number)
 
         for vacancy in response_content['items']:
@@ -38,6 +36,10 @@ def get_vacancies_by_language(language) -> dict:
                         vacancy['salary']['to'],
                     )
                 )
+
+        if response_content['pages'] - 1 == page_number:
+            found_records = response_content['found']
+            break
 
     average_salary = [i for i in average_salary if i]
 
