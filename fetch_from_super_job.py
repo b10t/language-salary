@@ -28,17 +28,13 @@ def get_vacancies_by_language(sj_token, language) -> dict:
     Args:
         language (str): Язык программирования
     """
-    response_content = fetch_vacancies_data(sj_token, language)
-
-    found_records = response_content['total']
-    number_page = count()
-
+    found_records = 0
     average_salary = []
 
-    while True:
+    for page_number in count():
         response_content = fetch_vacancies_data(sj_token,
                                                 language,
-                                                next(number_page))
+                                                page_number)
 
         for vacancy in response_content['objects']:
             if vacancy['currency'] == 'rub':
@@ -49,6 +45,7 @@ def get_vacancies_by_language(sj_token, language) -> dict:
                 )
 
         if not response_content['more']:
+            found_records = response_content['total']
             break
 
     average_salary = [i for i in average_salary if i]
