@@ -4,8 +4,6 @@ import requests
 
 from common_functions import predict_salary
 
-MOSCOW_REGION_ID = 1
-
 
 def get_vacancies_from_hh(programming_languages) -> dict:
     """Получить список вакансий с hh.ru
@@ -71,8 +69,10 @@ def fetch_vacancies(language, page=0) -> dict:
     Returns:
         dict: Словарь с данными по вакансии
     """
+    moscow_region_id = 1
+
     payload = {'text': 'Программист %s' % language,
-               'area': MOSCOW_REGION_ID,
+               'area': moscow_region_id,
                'page': page}
     response = requests.get(
         'https://api.hh.ru/vacancies',

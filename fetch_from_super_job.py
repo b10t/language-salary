@@ -5,10 +5,6 @@ import requests
 
 from common_functions import predict_salary
 
-MOSCOW_REGION_ID = 4
-PUBLICATION_PERIOD = 0
-INDUSTRIES_CATALOG = 48
-
 
 def get_vacancies_from_sj(programming_languages) -> dict:
     """Получить список вакансий с superjob.ru
@@ -79,11 +75,15 @@ def fetch_vacancies(sj_token, language, page=0) -> dict:
     Returns:
         dict: Словарь с данными по вакансиям
     """
+    moscow_region_id = 4
+    publication_period = 0
+    industries_catalog = 48
+
     headers = {'X-Api-App-Id': sj_token}
     payload = {'keyword': 'Программист %s' % language,
-               't': MOSCOW_REGION_ID,
-               'period': PUBLICATION_PERIOD,
-               'catalogues': INDUSTRIES_CATALOG,
+               't': moscow_region_id,
+               'period': publication_period,
+               'catalogues': industries_catalog,
                'page': page}
     response = requests.get(
         'https://api.superjob.ru/2.0/vacancies/',
