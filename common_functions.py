@@ -1,7 +1,5 @@
 from terminaltables import SingleTable
 
-LIST_PROGRAMMING_LANGUAGES = ['Python', 'Java', 'C#']
-
 
 def predict_salary(salary_from, salary_to):
     """Получение прогнозируемой зарплаты."""

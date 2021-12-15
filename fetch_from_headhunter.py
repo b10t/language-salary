@@ -2,15 +2,15 @@ from itertools import count
 
 import requests
 
-from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
+from common_functions import predict_salary
 
 MOSCOW_REGION_ID = 1
 
 
-def get_vacancies_from_hh() -> dict:
+def get_vacancies_from_hh(programming_languages) -> dict:
     """Получить список вакансий с hh.ru"""
     vacancies = {}
-    for language in LIST_PROGRAMMING_LANGUAGES:
+    for language in programming_languages:
         vacancies[language] = get_vacancies_by_language(language)
 
     return vacancies
@@ -73,4 +73,4 @@ def fetch_vacancies(language, page=0) -> dict:
 
 
 if __name__ == "main":
-    print(get_vacancies_from_hh())
+    pass

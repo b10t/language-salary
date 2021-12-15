@@ -3,19 +3,19 @@ from itertools import count
 
 import requests
 
-from common_functions import LIST_PROGRAMMING_LANGUAGES, predict_salary
+from common_functions import predict_salary
 
 MOSCOW_REGION_ID = 4
 PUBLICATION_PERIOD = 0
 INDUSTRIES_CATALOG = 48
 
 
-def get_vacancies_from_sj() -> dict:
+def get_vacancies_from_sj(programming_languages) -> dict:
     """Получить список вакансий с superjob.ru"""
     sj_token = os.getenv('SUPERJOB_KEY', '')
 
     vacancies = {}
-    for language in LIST_PROGRAMMING_LANGUAGES:
+    for language in programming_languages:
         vacancies[language] = get_vacancies_by_language(sj_token, language)
 
     return vacancies
@@ -88,4 +88,4 @@ def fetch_vacancies(sj_token, language, page=0) -> dict:
 
 
 if __name__ == '__main__':
-    print(get_vacancies_from_sj())
+    pass
