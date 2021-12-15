@@ -25,7 +25,11 @@ def get_vacancies_by_language(sj_token, language) -> dict:
     """Получить вакансии по выбраному языку программирования с hh.ru
 
     Args:
+        sj_token (str): Токен от API SuperJob
         language (str): Язык программирования
+
+    Returns:
+        dict: Словарь с данными по вакансии
     """
     found_records = 0
     average_salary = []
@@ -61,6 +65,7 @@ def fetch_vacancies(sj_token, language, page=0) -> dict:
     """Получить данные по выбраному языку программирования с superjob.ru
 
     Args:
+        sj_token (str): Токен от API SuperJob
         language (str): Язык программирования
         page (int, optional): Номер страницы. Defaults to 0.
 
