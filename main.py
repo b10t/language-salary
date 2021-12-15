@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 
-from common_functions import get_table_average_salary
+from salary_functions import get_table_average_salary
 from fetch_from_headhunter import get_vacancies_from_hh
 from fetch_from_super_job import get_vacancies_from_sj
 

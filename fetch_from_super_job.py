@@ -4,7 +4,7 @@ from statistics import mean
 
 import requests
 
-from common_functions import predict_salary
+from salary_functions import predict_salary
 
 
 def get_vacancies_from_sj(programming_languages) -> dict:
