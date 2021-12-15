@@ -60,12 +60,12 @@ def get_vacancies_by_language(sj_token, language) -> dict:
 
     average_salary = [i for i in average_salary if i]
 
-    language_dict = dict(
+    vacancy_description = dict(
         vacancies_found=found_records,
         vacancies_processed=len(average_salary),
         average_salary=int(sum(average_salary) / len(average_salary)))
 
-    return language_dict
+    return vacancy_description
 
 
 def fetch_vacancies(sj_token, language, page=0) -> dict:
