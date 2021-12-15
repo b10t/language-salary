@@ -8,7 +8,14 @@ MOSCOW_REGION_ID = 1
 
 
 def get_vacancies_from_hh(programming_languages) -> dict:
-    """Получить список вакансий с hh.ru"""
+    """Получить список вакансий с hh.ru
+
+    Args:
+        programming_languages (list): Список языков программирования для поиска
+
+    Returns:
+        dict: Словарь с данными по вакансиям
+    """
     vacancies = {}
     for language in programming_languages:
         vacancies[language] = get_vacancies_by_language(language)
@@ -21,6 +28,9 @@ def get_vacancies_by_language(language) -> dict:
 
     Args:
         language (str): Язык программирования
+
+    Returns:
+        dict: Словарь с данными по вакансии
     """
     found_records = 0
     average_salary = []
@@ -59,7 +69,7 @@ def fetch_vacancies(language, page=0) -> dict:
         page (int, optional): Номер страницы. Defaults to 0.
 
     Returns:
-        dict: Словарь с данными по вакансиям
+        dict: Словарь с данными по вакансии
     """
     payload = {'text': 'Программист %s' % language,
                'area': MOSCOW_REGION_ID,
@@ -70,7 +80,3 @@ def fetch_vacancies(language, page=0) -> dict:
     response.raise_for_status()
 
     return response.json()
-
-
-if __name__ == "main":
-    pass

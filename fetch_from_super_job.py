@@ -11,7 +11,14 @@ INDUSTRIES_CATALOG = 48
 
 
 def get_vacancies_from_sj(programming_languages) -> dict:
-    """Получить список вакансий с superjob.ru"""
+    """Получить список вакансий с superjob.ru
+
+    Args:
+        programming_languages (list): Список языков программирования для поиска
+
+    Returns:
+        dict: Словарь с данными по вакансиям
+    """
     sj_token = os.getenv('SUPERJOB_KEY', '')
 
     vacancies = {}
@@ -85,7 +92,3 @@ def fetch_vacancies(sj_token, language, page=0) -> dict:
     response.raise_for_status()
 
     return response.json()
-
-
-if __name__ == '__main__':
-    pass
