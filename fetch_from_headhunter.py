@@ -1,4 +1,5 @@
 from itertools import count
+from statistics import mean
 
 import requests
 
@@ -49,12 +50,12 @@ def get_vacancies_by_language(language) -> dict:
             found_records = response_content['found']
             break
 
-    average_salary = [i for i in average_salary if i]
+    average_salary = [salary for salary in average_salary if salary]
 
     vacancy_description = dict(
         vacancies_found=found_records,
         vacancies_processed=len(average_salary),
-        average_salary=int(sum(average_salary) / len(average_salary)))
+        average_salary=int(mean(average_salary) if average_salary else 0))
 
     return vacancy_description
 
