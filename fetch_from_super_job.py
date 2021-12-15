@@ -14,12 +14,11 @@ def get_vacancies_from_sj() -> dict:
     """Получить список вакансий с superjob.ru"""
     sj_token = os.getenv('SUPERJOB_KEY', '')
 
-    vacancies_data = {}
+    vacancies = {}
     for language in LIST_PROGRAMMING_LANGUAGES:
-        vacancies_data[language] = get_vacancies_by_language(sj_token,
-                                                             language)
+        vacancies[language] = get_vacancies_by_language(sj_token, language)
 
-    return vacancies_data
+    return vacancies
 
 
 def get_vacancies_by_language(sj_token, language) -> dict:
@@ -32,9 +31,9 @@ def get_vacancies_by_language(sj_token, language) -> dict:
     average_salary = []
 
     for page_number in count():
-        response_content = fetch_vacancies_data(sj_token,
-                                                language,
-                                                page_number)
+        response_content = fetch_vacancies(sj_token,
+                                           language,
+                                           page_number)
 
         for vacancy in response_content['objects']:
             if vacancy['currency'] == 'rub':
@@ -58,7 +57,7 @@ def get_vacancies_by_language(sj_token, language) -> dict:
     return language_dict
 
 
-def fetch_vacancies_data(sj_token, language, page=0) -> dict:
+def fetch_vacancies(sj_token, language, page=0) -> dict:
     """Получить данные по выбраному языку программирования с superjob.ru
 
     Args:

@@ -9,11 +9,11 @@ MOSCOW_REGION_ID = 1
 
 def get_vacancies_from_hh() -> dict:
     """Получить список вакансий с hh.ru"""
-    vacancies_data = {}
+    vacancies = {}
     for language in LIST_PROGRAMMING_LANGUAGES:
-        vacancies_data[language] = get_vacancies_by_language(language)
+        vacancies[language] = get_vacancies_by_language(language)
 
-    return vacancies_data
+    return vacancies
 
 
 def get_vacancies_by_language(language) -> dict:
@@ -26,7 +26,7 @@ def get_vacancies_by_language(language) -> dict:
     average_salary = []
 
     for page_number in count():
-        response_content = fetch_vacancies_data(language, page_number)
+        response_content = fetch_vacancies(language, page_number)
 
         for vacancy in response_content['items']:
             if vacancy['salary'] and vacancy['salary']['currency'] == 'RUR':
@@ -51,7 +51,7 @@ def get_vacancies_by_language(language) -> dict:
     return language_dict
 
 
-def fetch_vacancies_data(language, page=0) -> dict:
+def fetch_vacancies(language, page=0) -> dict:
     """Получить данные по выбраному языку программирования с hh.ru
 
     Args:
