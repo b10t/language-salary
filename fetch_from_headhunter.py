@@ -6,40 +6,40 @@ import requests
 from salary_functions import predict_salary
 
 
-def get_vacancies_from_hh(programming_languages) -> dict:
-    """Получить список вакансий с hh.ru
+def get_from_hh_salaries(programming_languages) -> dict:
+    """Получить список зарплат с hh.ru.
 
     Args:
         programming_languages (list): Список языков программирования для поиска
 
     Returns:
-        dict: Словарь с данными по вакансиям
+        dict: Словарь с данными по зарплатам
     """
-    vacancies = {}
+    salaries = {}
     for language in programming_languages:
-        vacancies[language] = get_vacancies_by_language(language)
+        salaries[language] = get_salary_details(language)
 
-    return vacancies
+    return salaries
 
 
-def get_vacancies_by_language(language) -> dict:
-    """Получить вакансии по выбраному языку программирования с hh.ru
+def get_salary_details(language) -> dict:
+    """Получить информацию по зарплате с hh.ru.
 
     Args:
         language (str): Язык программирования
 
     Returns:
-        dict: Словарь с данными по вакансии
+        dict: Словарь с данными по зарплате
     """
-    found_records = 0
-    average_salary = []
+    records_found = 0
+    average_salaries = []
 
     for page_number in count():
         response_content = fetch_vacancies(language, page_number)
 
         for vacancy in response_content['items']:
             if vacancy['salary'] and vacancy['salary']['currency'] == 'RUR':
-                average_salary.append(
+                average_salaries.append(
                     predict_salary(
                         vacancy['salary']['from'],
                         vacancy['salary']['to'],
@@ -47,21 +47,21 @@ def get_vacancies_by_language(language) -> dict:
                 )
 
         if response_content['pages'] - 1 == page_number:
-            found_records = response_content['found']
+            records_found = response_content['found']
             break
 
-    average_salary = [salary for salary in average_salary if salary]
+    average_salaries = list(filter(None, average_salaries))
 
-    vacancy_description = dict(
-        vacancies_found=found_records,
-        vacancies_processed=len(average_salary),
-        average_salary=int(mean(average_salary) if average_salary else 0))
+    salary_details = dict(
+        vacancies_found=records_found,
+        vacancies_processed=len(average_salaries),
+        average_salary=int(mean(average_salaries) if average_salaries else 0))
 
-    return vacancy_description
+    return salary_details
 
 
 def fetch_vacancies(language, page=0) -> dict:
-    """Получить данные по выбраному языку программирования с hh.ru
+    """Получить данные по выбраному языку программирования с hh.ru.
 
     Args:
         language (str): Язык программирования

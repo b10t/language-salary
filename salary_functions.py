@@ -11,15 +11,14 @@ def predict_salary(salary_from, salary_to):
         return salary_to * 0.8
 
 
-def get_average_salary_table(title, vacancies):
-    """Отобразить таблицу по языкам программирования, со средней зарплатой."""
-
-    vacancy_table = []
-    vacancy_table.append(['Язык программирования', 'Найдено вакансий',
+def get_average_salaries_table(title, salaries):
+    """Получение таблицы по средним зарплатам."""
+    salaries_table = []
+    salaries_table.append(['Язык программирования', 'Найдено вакансий',
                           'Обработано вакансий', 'Средняя зарплата'])
 
-    for language_name, vacancy_description in vacancies.items():
-        vacancy_table.append([language_name, *vacancy_description.values()])
+    for language_name, salary_details in salaries.items():
+        salaries_table.append([language_name, *salary_details.values()])
 
-    table_instance = SingleTable(vacancy_table, title)
+    table_instance = SingleTable(salaries_table, title)
     return table_instance.table

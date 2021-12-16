@@ -7,26 +7,27 @@ import requests
 from salary_functions import predict_salary
 
 
-def get_vacancies_from_sj(programming_languages) -> dict:
-    """Получить список вакансий с superjob.ru
+def get_from_sj_salaries(programming_languages) -> dict:
+    """Получить список зарплат с superjob.ru.
 
     Args:
         programming_languages (list): Список языков программирования для поиска
 
     Returns:
-        dict: Словарь с данными по вакансиям
+        dict: Словарь с данными по зарплатам
     """
     sj_token = os.getenv('SUPERJOB_KEY', '')
 
-    vacancies = {}
+    salaries = {}
     for language in programming_languages:
-        vacancies[language] = get_vacancies_by_language(sj_token, language)
+        salaries[language] = get_salary_details(sj_token,
+                                                language)
 
-    return vacancies
+    return salaries
 
 
-def get_vacancies_by_language(sj_token, language) -> dict:
-    """Получить вакансии по выбраному языку программирования с hh.ru
+def get_salary_details(sj_token, language) -> dict:
+    """Получить информацию по зарплате с superjob.ru.
 
     Args:
         sj_token (str): Токен от API SuperJob
@@ -35,8 +36,8 @@ def get_vacancies_by_language(sj_token, language) -> dict:
     Returns:
         dict: Словарь с данными по вакансии
     """
-    found_records = 0
-    average_salary = []
+    records_found = 0
+    average_salaries = []
 
     for page_number in count():
         response_content = fetch_vacancies(sj_token,
@@ -45,28 +46,28 @@ def get_vacancies_by_language(sj_token, language) -> dict:
 
         for vacancy in response_content['objects']:
             if vacancy['currency'] == 'rub':
-                average_salary.append(
+                average_salaries.append(
                     predict_salary(vacancy['payment_from'],
                                    vacancy['payment_to']
                                    )
                 )
 
         if not response_content['more']:
-            found_records = response_content['total']
+            records_found = response_content['total']
             break
 
-    average_salary = [salary for salary in average_salary if salary]
+    average_salaries = list(filter(None, average_salaries))
 
-    vacancy_description = dict(
-        vacancies_found=found_records,
-        vacancies_processed=len(average_salary),
-        average_salary=int(mean(average_salary) if average_salary else 0))
+    salary_details = dict(
+        vacancies_found=records_found,
+        vacancies_processed=len(average_salaries),
+        average_salary=int(mean(average_salaries) if average_salaries else 0))
 
-    return vacancy_description
+    return salary_details
 
 
 def fetch_vacancies(sj_token, language, page=0) -> dict:
-    """Получить данные по выбраному языку программирования с superjob.ru
+    """Получить данные по выбраному языку программирования с superjob.ru.
 
     Args:
         sj_token (str): Токен от API SuperJob
