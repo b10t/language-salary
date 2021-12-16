@@ -11,7 +11,7 @@ def predict_salary(salary_from, salary_to):
         return salary_to * 0.8
 
 
-def get_table_average_salary(title, vacancies):
+def get_average_salary_table(title, vacancies):
     """Отобразить таблицу по языкам программирования, со средней зарплатой."""
 
     vacancy_table = []
