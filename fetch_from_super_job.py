@@ -36,7 +36,6 @@ def get_salary_details(sj_token, language) -> dict:
     Returns:
         dict: Словарь с данными по вакансии
     """
-    records_found = 0
     average_salaries = []
 
     for page_number in count():
@@ -53,13 +52,12 @@ def get_salary_details(sj_token, language) -> dict:
                 )
 
         if not response_content['more']:
-            records_found = response_content['total']
             break
 
     average_salaries = list(filter(None, average_salaries))
 
     salary_details = dict(
-        vacancies_found=records_found,
+        vacancies_found=response_content['total'],
         vacancies_processed=len(average_salaries),
         average_salary=int(mean(average_salaries) if average_salaries else 0))
 
