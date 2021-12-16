@@ -36,7 +36,6 @@ def get_salary_details(sj_token, language) -> dict:
     Returns:
         dict: Словарь с данными по вакансии
     """
-    response_content = {'total': 0}
     average_salaries = []
 
     for page_number in count():
